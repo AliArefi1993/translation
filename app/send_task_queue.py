@@ -1,20 +1,13 @@
-import pika
 import json
-from app.config import RABBITMQ_HOST
+from faststream.rabbit import RabbitBroker, RabbitMessage
+from config import RABBITMQ_HOST
 
-def send_to_result_queue(translated_text):
-    connection = pika.BlockingConnection(pika.ConnectionParameters(host=RABBITMQ_HOST))
-    channel = connection.channel()
+broker = RabbitBroker(RABBITMQ_HOST)
 
-    channel.queue_declare(queue="translation_result")
-
+async def send_to_result_queue(translated_text):
     message = {"translated_text": translated_text}
-    channel.basic_publish(
-        exchange="",
-        routing_key="translation_result",
-        body=json.dumps(message)
+    await broker.publish(
+        json.dumps(message),
+        queue="translation_result"
     )
-
     print(f"Sent translated text to result queue: {translated_text}")
-
-    connection.close()

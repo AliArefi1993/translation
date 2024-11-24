@@ -1,6 +1,6 @@
 import argostranslate.package
 import argostranslate.translate
-from app.config import TRANSLATION_MODEL_PATH
+from config import TRANSLATION_MODEL_PATH
 
 class TranslationService:
     def __init__(self):
@@ -22,8 +22,6 @@ class TranslationService:
             print("Model loaded successfully!")
         else:
             print("Translation model for English to Persian not found.")
-    
-
 
 
     def translate_text(self, text: str) -> str:
