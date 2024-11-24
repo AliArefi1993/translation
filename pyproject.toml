@@ -9,5 +9,7 @@ authors = ["Anonymous <anonymous@example.com>"]
 python = "^3.10"
 faststream = "^0.5.30"
 aio-pika = "^9.5.0"
+numpy = "1.24.0"
 typing-extensions = "^4.12.2"
-argostranslate = { version = "^1.9.6", extras = ["binary"] }
+argostranslate = "^1.9.6"
+
