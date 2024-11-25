@@ -16,12 +16,14 @@ async def process_translation_request(message: RabbitMessage):
         message_data = message.body
         message_json = json.loads(message_data)
         text_to_translate = message_json.get("text", "")
+        chain = message_json.get("chain", "")
 
         if text_to_translate:
             translated_text = translation_service.translate_text(text_to_translate)
+            message = {"translated_text":translated_text, "chain":chain}
             print(f"Translated text: {translated_text}")
 
-            await send_to_result_queue(broker, translated_text)
+            await send_to_result_queue(broker, message)
         else:
             print("Received an empty message or invalid format.")
     except Exception as e:
