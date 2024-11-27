@@ -1,7 +1,8 @@
 import argostranslate.package
 import argostranslate.translate
-from config import TRANSLATION_MODEL_PATH
+from config import TRANSLATION_MODEL_PATH, MODEL_NAME
 import logging
+import os
 
 
 logger = logging.getLogger(__name__)
@@ -15,7 +16,8 @@ class TranslationService:
         """
         Load the Argostranslate translation model for English to Persian.
         """
-        argostranslate.package.install_from_path(TRANSLATION_MODEL_PATH)
+        full_path = os.path.join(TRANSLATION_MODEL_PATH, MODEL_NAME)
+        argostranslate.package.install_from_path(full_path)
         languages = argostranslate.translate.load_installed_languages()
         
         from_lang = next((lang for lang in languages if lang.code == "en"), None)
