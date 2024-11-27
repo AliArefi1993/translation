@@ -1,7 +1,7 @@
 from faststream.rabbit import RabbitBroker, RabbitMessage
 from faststream import FastStream
 from services.translation_service import TranslationService
-from config import RABBITMQ_HOST, TRANSLATION_QUEUE
+from config import RABBITMQ_HOST, TRANSLATION_QUEUE, RABBITMQ_USER, RABBITMQ_PASSWORD
 from send_task_queue import send_to_result_queue
 import json
 import logging
@@ -10,7 +10,7 @@ import logging
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
-broker = RabbitBroker(f"amqp://guest:guest@{RABBITMQ_HOST}/")
+broker = RabbitBroker(url=f"amqp://{RABBITMQ_USER}:{RABBITMQ_PASSWORD}@{RABBITMQ_HOST}")
 app = FastStream(broker)
 
 translation_service = TranslationService()
