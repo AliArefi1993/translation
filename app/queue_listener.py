@@ -4,6 +4,11 @@ from services.translation_service import TranslationService
 from config import RABBITMQ_HOST, TRANSLATION_QUEUE
 from send_task_queue import send_to_result_queue
 import json
+import logging
+
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
 
 broker = RabbitBroker(f"amqp://guest:guest@{RABBITMQ_HOST}/")
 app = FastStream(broker)
@@ -22,13 +27,13 @@ async def process_translation_request(message: RabbitMessage):
         if text_to_translate:
             translated_text = translation_service.translate_text(text_to_translate)
             message = {"translated_text":translated_text, "chain":chain, "request_id":request_id}
-            print(f"Translated text: {translated_text}")
+            logger.info(f"Translated text: {translated_text}")
 
             await send_to_result_queue(broker, message)
         else:
-            print("Received an empty message or invalid format.")
+            logger.info("Received an empty message or invalid format.")
     except Exception as e:
-        print(f"Error processing translation request: {e}")
+        logger.error(f"Error processing translation request: {e}")
 
 # Main entry point: Run FastStream app asynchronously
 async def main():

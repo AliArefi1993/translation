@@ -1,6 +1,10 @@
 import argostranslate.package
 import argostranslate.translate
 from config import TRANSLATION_MODEL_PATH
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 class TranslationService:
     def __init__(self):
@@ -19,9 +23,9 @@ class TranslationService:
 
         if from_lang and to_lang:
             self.model = from_lang.get_translation(to_lang)
-            print("Model loaded successfully!")
+            logger.info("Model loaded successfully!")
         else:
-            print("Translation model for English to Persian not found.")
+            logger.warning("Translation model for English to Persian not found.")
 
 
     def translate_text(self, text: str) -> str:
